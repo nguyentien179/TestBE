@@ -3,7 +3,15 @@ import articleService from "../../application/services/articleService.js";
 
 export const getAllArticles = async (req, res, next) => {
   try {
-    const articles = await articleService.getAllArticles();
+    const filters = {
+    keyword: req.query.keyword,
+    categoryId: req.query.categoryId,
+    authorId: req.query.authorId,
+    fromDate: req.query.fromDate,
+    toDate: req.query.toDate,
+    };
+
+    const articles = await ArticleService.getAllArticles(filters);
     res.json(articles);
   } catch (err) {
     next(err);

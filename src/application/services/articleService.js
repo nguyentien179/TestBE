@@ -4,8 +4,47 @@ import { CreateArticleSchema } from "../../domain/DTOs/CreateArticleDTO.js";
 import { UpdateArticleSchema } from "../../domain/DTOs/UpdateArticleDTO.js";
 
 class ArticleService {
-  async getAllArticles() {
+  async getAllArticles(filters = {}) {
+    const {
+      keyword,
+      categoryId,
+      authorId,
+      fromDate,
+      toDate,
+    } = filters;
+
+    const whereClause = {};
+
+    if (keyword) {
+      whereClause.OR = [
+        { title: { contains: keyword, mode: "insensitive" } },
+        { content: { contains: keyword, mode: "insensitive" } },
+      ];
+    }
+
+    if (categoryId) {
+      whereClause.categoryId = categoryId;
+    }
+
+    if (authorId) {
+      whereClause.authorId = authorId;
+    }
+
+    if (fromDate || toDate) {
+      whereClause.createdAt = {};
+      if (fromDate) {
+        whereClause.createdAt.gte = new Date(fromDate);
+      }
+      if (toDate) {
+        whereClause.createdAt.lte = new Date(toDate);
+      }
+    }
+
     return await prisma.article.findMany({
+      where: whereClause,
+      orderBy: {
+        createdAt: "desc",
+      },
       include: {
         category: true,
         tags: true,
@@ -85,7 +124,6 @@ class ArticleService {
     });
   }
 
-  // Delete article by ID
   async deleteArticle(id) {
     return await prisma.article.delete({
       where: { id },
