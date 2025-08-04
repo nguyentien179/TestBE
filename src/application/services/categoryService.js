@@ -40,6 +40,27 @@ class CategoryService {
       where: { id },
     });
   }
+  async getCategoryHighlights() {
+    const categories = await prisma.category.findMany();
+
+    const highlights = await Promise.all(
+      categories.map(async (cat) => {
+        const article = await prisma.article.findFirst({
+          where: { categoryId: cat.id },
+          orderBy: { createdAt: "desc" },
+          include: {
+            author: true,
+          },
+        });
+        return {
+          category: cat.name,
+          article,
+        };
+      })
+    );
+
+    return highlights;
+  }
 }
 
 export default new CategoryService();

@@ -38,3 +38,12 @@ export const deleteCategory = async (req, res, next) => {
     next(err);
   }
 };
+
+export const getCategoryHighlights = async (req, res, next) => {
+  try {
+    const highlights = await categoryService.getCategoryHighlights();
+    res.json(highlights);
+  } catch (err) {
+    next(err);
+  }
+};

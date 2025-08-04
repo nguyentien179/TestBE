@@ -6,6 +6,9 @@ import {
   createArticle,
   updateArticle,
   deleteArticle,
+  getTopHeadlines,
+  getBreakingNews,
+  getTrendingTags,
 } from "../controllers/articleController.js";
 import { authenticate } from "../middlewares/auth.js";
 import { authorizePermission } from "../middlewares/authorizePermission.js";
@@ -54,6 +57,42 @@ const router = express.Router();
  *         description: A list of articles
  */
 router.get("/", getAllArticles);
+
+/**
+ * @swagger
+ * /top-headlines:
+ *   get:
+ *     summary: Get top headlines
+ *     tags: [News]
+ *     responses:
+ *       200:
+ *         description: A list of top headlines
+ */
+router.get("/top-headlines", getTopHeadlines);
+
+/**
+ * @swagger
+ * /breaking-news:
+ *   get:
+ *     summary: Get breaking news
+ *     tags: [News]
+ *     responses:
+ *       200:
+ *         description: A list of breaking news articles
+ */
+router.get("/breaking-news", getBreakingNews);
+
+/**
+ * @swagger
+ * /trending-tags:
+ *   get:
+ *     summary: Get trending tags
+ *     tags: [News]
+ *     responses:
+ *       200:
+ *         description: A list of trending tags
+ */
+router.get("/trending-tags", getTrendingTags);
 
 /**
  * @swagger

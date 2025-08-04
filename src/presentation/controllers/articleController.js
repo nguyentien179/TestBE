@@ -54,3 +54,28 @@ export const deleteArticle = async (req, res, next) => {
     next(err);
   }
 };
+
+export const getTopHeadlines = async () => {
+  try {
+    const articles = await articleService.getTopHeadlines();
+    res.status(200).json(articles);
+  } catch (err) {
+    next(err);
+  }
+};
+export const getBreakingNews = async () => {
+  try {
+    const articles = await articleService.getBreakingNews();
+    res.status(200).json(articles);
+  } catch (err) {
+    next(err);
+  }
+};
+export const getTrendingTags = async () => {
+  try {
+    const articles = await articleService.getTrendingTags();
+    res.status(200).json(articles);
+  } catch (err) {
+    next(err);
+  }
+};

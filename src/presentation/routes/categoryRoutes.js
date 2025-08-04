@@ -5,6 +5,7 @@ import {
   createCategory,
   updateCategory,
   deleteCategory,
+  getCategoryHighlights,
 } from "../controllers/categoryController.js";
 import { authenticate } from "../middlewares/auth.js";
 import { authorizeRoles } from "../middlewares/authorizeRoles.js";
@@ -29,6 +30,18 @@ const router = express.Router();
  *         description: A list of categories
  */
 router.get("/", getAllCategories);
+
+/**
+ * @swagger
+ * /categories:
+ *   get:
+ *     summary: Get all categories highlights
+ *     tags: [Categories]
+ *     responses:
+ *       200:
+ *         description: A list of categories highlights
+ */
+router.get("/highlights", getCategoryHighlights);
 
 /**
  * @swagger

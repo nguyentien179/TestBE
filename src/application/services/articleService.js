@@ -123,6 +123,42 @@ class ArticleService {
       where: { id },
     });
   }
+
+  async getTopHeadlines() {
+    return prisma.article.findMany({
+      orderBy: { createdAt: "desc" },
+      take: 5,
+      include: {
+        category: true,
+        author: { select: { name: true } },
+      },
+    });
+  }
+  async getBreakingNews() {
+    return prisma.article.findMany({
+      where: {
+        tags: {
+          some: {
+            name: "breaking",
+          },
+        },
+      },
+      orderBy: { createdAt: "desc" },
+      take: 5,
+    });
+  }
+  async getTrendingTags() {
+    const tags = await prisma.tag.findMany({
+      include: {
+        articles: true,
+      },
+    });
+
+    return tags
+      .map((tag) => ({ name: tag.name, count: tag.articles.length }))
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 5);
+  }
 }
 
 export default new ArticleService();
