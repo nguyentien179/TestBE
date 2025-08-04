@@ -1,4 +1,4 @@
-import { prisma } from "../../infrastructure/prisma/client.js";
+import prisma from "../../infrastructure/client.js";
 
 class BookmarkService {
   async getUserBookmarks(userId) {

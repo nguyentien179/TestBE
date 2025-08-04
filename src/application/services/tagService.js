@@ -1,5 +1,5 @@
-import { prisma } from "../../infrastructure/prisma/client.js";
-import { CreateTagSchema } from "../../domain/dtos/CreateTagDTO.js";
+import prisma from "../../infrastructure/client.js";
+import { CreateTagSchema } from "../../domain/DTOs/Tags/CreateTagDTO.js";
 
 class TagService {
   async getAllTags() {

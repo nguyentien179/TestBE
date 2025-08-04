@@ -1,16 +1,17 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { prisma } from "../../infrastructure/prisma/client.js";
+import prisma from "../../infrastructure/client.js";
 import { RegisterSchema } from "../../domain/DTOs/Auth/RegisterDTO.js";
 import { LoginSchema } from "../../domain/DTOs/Auth/LoginDTO.js";
 import { RefreshTokenSchema } from "../../domain/DTOs/Auth/RefreshTokenDTO.js";
-
 
 class AuthService {
   async register(input) {
     const dto = RegisterSchema.parse(input);
 
-    const existing = await prisma.user.findUnique({ where: { email: dto.email } });
+    const existing = await prisma.user.findUnique({
+      where: { email: dto.email },
+    });
     if (existing) throw new Error("Email already in use");
 
     const hashed = await bcrypt.hash(dto.password, 10);
@@ -86,23 +87,22 @@ class AuthService {
   }
 
   async getProfile(userId) {
-  const user = await prisma.user.findUnique({
-    where: { id: userId },
-    select: {
-      id: true,
-      name: true,
-      email: true,
-      role: true,
-      createdAt: true,
-    },
-  });
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true,
+        createdAt: true,
+      },
+    });
 
-  if (!user) {
-    throw new Error("User not found");
-  }
+    if (!user) {
+      throw new Error("User not found");
+    }
     return user;
   }
-
 
   #generateAccessToken(user) {
     return jwt.sign(
@@ -113,11 +113,9 @@ class AuthService {
   }
 
   #generateRefreshToken(user) {
-    return jwt.sign(
-      { id: user.id },
-      process.env.REFRESH_TOKEN_SECRET,
-      { expiresIn: process.env.REFRESH_TOKEN_EXPIRY || "7d" }
-    );
+    return jwt.sign({ id: user.id }, process.env.REFRESH_TOKEN_SECRET, {
+      expiresIn: process.env.REFRESH_TOKEN_EXPIRY || "7d",
+    });
   }
 }
 

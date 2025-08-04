@@ -1,4 +1,4 @@
-import CommentService from "../../../application/services/commentService.js";
+import CommentService from "../../application/services/commentService.js";
 
 export const createComment = async (req, res) => {
   try {
@@ -11,7 +11,9 @@ export const createComment = async (req, res) => {
 
 export const getApprovedComments = async (req, res) => {
   try {
-    const comments = await CommentService.getApprovedComments(req.params.articleId);
+    const comments = await CommentService.getApprovedComments(
+      req.params.articleId
+    );
     res.json(comments);
   } catch (err) {
     res.status(400).json({ error: err.message });
@@ -29,7 +31,10 @@ export const getAllComments = async (req, res) => {
 
 export const moderateComment = async (req, res) => {
   try {
-    const result = await CommentService.moderateComment(req.params.id, req.body);
+    const result = await CommentService.moderateComment(
+      req.params.id,
+      req.body
+    );
     res.json(result);
   } catch (err) {
     res.status(400).json({ error: err.errors ?? err.message });

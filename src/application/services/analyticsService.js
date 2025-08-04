@@ -1,14 +1,15 @@
-import { prisma } from "../../infrastructure/prisma/client.js";
+import prisma from "../../infrastructure/client.js";
 import { subDays } from "date-fns";
 
 class AnalyticsService {
   async getDashboardStats() {
-    const [totalUsers, totalArticles, totalComments, pendingComments] = await Promise.all([
-      prisma.user.count(),
-      prisma.article.count(),
-      prisma.comment.count(),
-      prisma.comment.count({ where: { approved: false } }),
-    ]);
+    const [totalUsers, totalArticles, totalComments, pendingComments] =
+      await Promise.all([
+        prisma.user.count(),
+        prisma.article.count(),
+        prisma.comment.count(),
+        prisma.comment.count({ where: { approved: false } }),
+      ]);
 
     const articlesPerCategory = await prisma.category.findMany({
       select: {

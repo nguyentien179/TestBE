@@ -1,6 +1,7 @@
-import { prisma } from "../../infrastructure/prisma/client.js";
-import { CreateCategorySchema } from "../../domain/dtos/CreateCategoryDTO.js";
-import { UpdateCategorySchema } from "../../domain/dtos/UpdateCategoryDTO.js";
+import prisma from "../../infrastructure/client.js";
+import slugify from "slugify";
+import { CreateCategorySchema } from "../../domain/DTOs/Category/CreateCategoryDTO.js";
+import { UpdateCategorySchema } from "../../domain/DTOs/Category/UpdateCategoryDTO.js";
 
 class CategoryService {
   async getAllCategories() {
@@ -10,14 +11,24 @@ class CategoryService {
   }
 
   async createCategory(input) {
-    const dto = CreateCategorySchema.parse(input);
+    const withSlug = {
+      ...input,
+      slug: slugify(input.name, { lower: true }), // auto-generate slug
+    };
+
+    const dto = CreateCategorySchema.parse(withSlug);
+
     return await prisma.category.create({
       data: dto,
     });
   }
 
   async updateCategory(id, input) {
-    const dto = UpdateCategorySchema.parse(input);
+    const withSlug = {
+      ...input,
+      slug: slugify(input.name, { lower: true }), // auto-generate slug
+    };
+    const dto = UpdateCategorySchema.parse(withSlug);
     return await prisma.category.update({
       where: { id },
       data: dto,

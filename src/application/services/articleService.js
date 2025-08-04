@@ -1,17 +1,11 @@
 // src/application/services/articleService.js
-import { prisma } from "../../infrastructure/prisma/client.js";
-import { CreateArticleSchema } from "../../domain/DTOs/CreateArticleDTO.js";
-import { UpdateArticleSchema } from "../../domain/DTOs/UpdateArticleDTO.js";
+import { CreateArticleSchema } from "../../domain/DTOs/Article/CreateArticleDTO.js";
+import { UpdateArticleSchema } from "../../domain/DTOs/Article/UpdateArticleDTO.js";
+import prisma from "../../infrastructure/client.js";
 
 class ArticleService {
   async getAllArticles(filters = {}) {
-    const {
-      keyword,
-      categoryId,
-      authorId,
-      fromDate,
-      toDate,
-    } = filters;
+    const { keyword, categoryId, authorId, fromDate, toDate } = filters;
 
     const whereClause = {};
 
@@ -87,7 +81,7 @@ class ArticleService {
 
   async createArticle(input) {
     const dto = CreateArticleSchema.parse(input);
-
+    console.log("tagIds from DTO:", dto.tagIds);
     return await prisma.article.create({
       data: {
         title: dto.title,
@@ -98,7 +92,7 @@ class ArticleService {
         seoKeywords: dto.seoKeywords,
         category: { connect: { id: dto.categoryId } },
         tags: {
-          connect: dto.tagIds?.map((id) => ({ id })) ?? [],
+          connect: (dto.tagIds ?? []).map((id) => ({ id })),
         },
         author: { connect: { id: dto.authorId } },
       },

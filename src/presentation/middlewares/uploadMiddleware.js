@@ -1,6 +1,6 @@
 import multer from "multer";
 import { CloudinaryStorage } from "multer-storage-cloudinary";
-import cloudinary from "../cloudinary/cloudinary.js";
+import cloudinary from "../../infrastructure/cloudinary/cloudinary.js";
 
 const storage = new CloudinaryStorage({
   cloudinary,

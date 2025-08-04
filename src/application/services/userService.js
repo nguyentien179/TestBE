@@ -1,5 +1,8 @@
-import { prisma } from "../../infrastructure/prisma/client.js";
-import { UpdateUserDTO, UserResponseDTO } from "../../domain/DTOs/UserDTO.js";
+import prisma from "../../infrastructure/client.js";
+import {
+  UpdateUserDTO,
+  UserResponseDTO,
+} from "../../domain/DTOs/User/UserDTO.js";
 import bcrypt from "bcryptjs";
 
 class UserService {
@@ -14,7 +17,12 @@ class UserService {
       },
     });
 
-    return users.map(user => UserResponseDTO.parse(user));
+    return users.map((user) =>
+      UserResponseDTO.parse({
+        ...user,
+        createdAt: user.createdAt.toISOString(),
+      })
+    );
   }
 
   async getUserById(id) {

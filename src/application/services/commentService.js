@@ -1,8 +1,6 @@
-import { prisma } from "../../infrastructure/prisma/client.js";
-import {
-  CreateCommentSchema,
-  ModerateCommentSchema,
-} from "../../domain/DTOs/CommentDTO.js";
+import prisma from "../../infrastructure/client.js";
+import { CreateCommentSchema } from "../../domain/DTOs/Comment/CreateCommentDTO.js";
+import { ModerateCommentSchema } from "../../domain/DTOs/Comment/ModerateComment.js";
 
 class CommentService {
   async createComment(input, userId) {
