@@ -1,6 +1,7 @@
 // main.js
 import express from "express";
 import dotenv from "dotenv";
+import cors from "cors";
 import routes from "./src/presentation/routes/index.js";
 import { errorHandler } from "./src/presentation/middlewares/errorHandler.js";
 import swaggerUi from "swagger-ui-express";
@@ -12,6 +13,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Middlewares
+app.use(cors({ origin: "*" }));
 app.use(express.json());
 
 // Swagger Route
