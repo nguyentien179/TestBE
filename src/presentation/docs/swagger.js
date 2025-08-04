@@ -10,7 +10,7 @@ const swaggerDefinition = {
   },
   servers: [
     {
-      url: "http://localhost:3000/api",
+      url: "https://testbe-m2w4.onrender.com/api",
       description: "Development server",
     },
   ],
@@ -32,9 +32,7 @@ const swaggerDefinition = {
 
 const options = {
   swaggerDefinition,
-  apis: [
-    "./src/presentation/routes/*.js", // Adjust path to where your route files are
-  ],
+  apis: ["./src/presentation/routes/*.js"],
 };
 
 const swaggerSpec = swaggerJSDoc(options);
